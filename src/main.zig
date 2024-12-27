@@ -15,7 +15,7 @@ pub fn main() !void {
     var allocatorBacking = std.heap.GeneralPurposeAllocator(.{}){};
     const allocator = allocatorBacking.allocator();
 
-    const filter = "subsystem == 'com.apple.TCC' AND category == 'access' AND (eventMessage BEGINSWITH 'Override: eval: ' OR eventMessage BEGINSWITH 'Handling ')";
+    const filter = "subsystem == 'com.apple.TCC' AND category == 'access' AND (eventMessage BEGINSWITH 'Override: eval: ' OR eventMessage BEGINSWITH 'Handling access request to ')";
 
     var proc = ChildProcess.init(&[_][]const u8{ "/usr/bin/log", "stream", "--style", "ndjson", "--info", "--predicate", filter }, allocator);
     proc.stdout_behavior = ChildProcess.StdIo.Pipe;
@@ -40,6 +40,8 @@ pub fn main() !void {
         var evtObject = AppEvent{ .timeString = parsed.value.timestamp, .service = undefined, .bundleId = undefined, .path = null, .outcome = undefined };
 
         if (std.mem.startsWith(u8, parsed.value.eventMessage, "Handling ")) {
+
+        if (std.mem.startsWith(u8, parsed.value.eventMessage, "Handling access request to ")) {
             var startIdx: usize = undefined;
             var endIdx: usize = undefined;
 
@@ -88,6 +90,9 @@ pub fn main() !void {
                 endIdx = std.mem.indexOfPos(u8, parsed.value.eventMessage, startIdx, ";").?;
                 evtObject.outcome = parsed.value.eventMessage[startIdx..endIdx];
             }
+        } else {
+            try stderr.print("Unexpected line {s}\n", .{parsed.value.eventMessage});
+            continue;
         }
 
         try emitEvent(evtObject);
