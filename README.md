@@ -6,7 +6,7 @@ Tracks requests to the Transparency Consent and Control daemon
 
 Logs look something like this
 
-* Lines starting with `#>` are external annotations
+> Lines starting with `#>` are external annotations
 
 ```
 Observing events...
