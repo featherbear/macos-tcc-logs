@@ -22,12 +22,6 @@ pub fn main() !void {
     proc.stderr_behavior = ChildProcess.StdIo.Ignore;
     try proc.spawn();
 
-    const bundleIdMap_maxItems = 10;
-    var bundleIdMap = std.StringArrayHashMap([]const u8).init(allocator);
-    try bundleIdMap.ensureTotalCapacity(bundleIdMap_maxItems);
-
-    defer bundleIdMap.deinit();
-
     // The max I've seen is around 5400 bytes
     var buffer: [8192]u8 = undefined;
 
