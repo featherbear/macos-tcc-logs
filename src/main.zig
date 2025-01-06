@@ -39,9 +39,6 @@ pub fn main() !void {
 
         var evtObject = AppEvent{ .timeString = parsed.value.timestamp, .service = undefined, .bundleId = undefined, .path = null, .outcome = undefined };
 
-        try stderr.print("debug {s}\n", .{parsed.value.eventMessage});
-        // debug Handling access request: kTCCServiceFileProviderDomain:<private>:<private>, default_allow: 0, authValue: 1,
-
         if (std.mem.startsWith(u8, parsed.value.eventMessage, "Handling access request to ")) {
             var startIdx: usize = undefined;
             var endIdx: usize = undefined;
@@ -58,7 +55,7 @@ pub fn main() !void {
                 endIdx = std.mem.indexOfPos(u8, parsed.value.eventMessage, startIdx, "}").?;
                 var bundleId = parsed.value.eventMessage[startIdx..endIdx];
 
-                // debug Handling access request to kTCCServiceReminders, from Sub:{/System/Library/PrivateFrameworks/AppleMediaServices.framework/Versions/A/Resources/amsaccountsd}Resp:{TCCDProcess: identifier=com.apple.amsaccountsd, pid=89859, auid=501, euid=501, binary_path=/System/Library/PrivateFrameworks/AppleMediaServices.framework/Versions/A/Resources/amsaccountsd}, ReqResult(Auth Right: Unknown (None), promptType: 1,DB Action:None, UpdateVerifierData)q
+                // Handling access request to kTCCServiceReminders, from Sub:{/System/Library/PrivateFrameworks/AppleMediaServices.framework/Versions/A/Resources/amsaccountsd}Resp:{TCCDProcess: identifier=com.apple.amsaccountsd, pid=89859, auid=501, euid=501, binary_path=/System/Library/PrivateFrameworks/AppleMediaServices.framework/Versions/A/Resources/amsaccountsd}, ReqResult(Auth Right: Unknown (None), promptType: 1,DB Action:None, UpdateVerifierData)q
                 if (std.mem.indexOf(u8, bundleId, "/") != null) {
                     const prefix2 = "{TCCDProcess: identifier=";
                     startIdx = std.mem.indexOfPos(u8, parsed.value.eventMessage, endIdx, prefix2).? + prefix2.len;
