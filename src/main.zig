@@ -46,19 +46,19 @@ pub fn main() !void {
             return;
         } else {
             if (argsParser.args.includeService.len > 0) {
-                try stdout.print("Included services:", .{});
+                try stderr.print("Included services:", .{});
                 for (argsParser.args.includeService) |service| {
-                    try stdout.print(" {s}", .{service});
+                    try stderr.print(" {s}", .{service});
                 }
-                try stdout.print("\n", .{});
+                try stderr.print("\n", .{});
             }
 
             if (argsParser.args.excludeService.len > 0) {
-                try stdout.print("Excluded services:", .{});
+                try stderr.print("Excluded services:", .{});
                 for (argsParser.args.excludeService) |service| {
-                    try stdout.print(" {s}", .{service});
+                    try stderr.print(" {s}", .{service});
                 }
-                try stdout.print("\n", .{});
+                try stderr.print("\n", .{});
             }
         }
 
@@ -67,19 +67,19 @@ pub fn main() !void {
             return;
         } else {
             if (argsParser.args.includePath.len > 0) {
-                try stdout.print("Included paths:", .{});
+                try stderr.print("Included paths:", .{});
                 for (argsParser.args.includePath) |path| {
-                    try stdout.print(" {s}", .{path});
+                    try stderr.print(" {s}", .{path});
                 }
-                try stdout.print("\n", .{});
+                try stderr.print("\n", .{});
             }
 
             if (argsParser.args.excludePath.len > 0) {
-                try stdout.print("Excluded paths:", .{});
+                try stderr.print("Excluded paths:", .{});
                 for (argsParser.args.excludePath) |path| {
-                    try stdout.print(" {s}", .{path});
+                    try stderr.print(" {s}", .{path});
                 }
-                try stdout.print("\n", .{});
+                try stderr.print("\n", .{});
             }
         }
 
@@ -88,19 +88,19 @@ pub fn main() !void {
             return;
         } else {
             if (argsParser.args.includeBundle.len > 0) {
-                try stdout.print("Included bundle IDs:", .{});
+                try stderr.print("Included bundle IDs:", .{});
                 for (argsParser.args.includeBundle) |bundle| {
-                    try stdout.print(" {s}", .{bundle});
+                    try stderr.print(" {s}", .{bundle});
                 }
-                try stdout.print("\n", .{});
+                try stderr.print("\n", .{});
             }
 
             if (argsParser.args.excludeBundle.len > 0) {
-                try stdout.print("Excluded bundle IDs:", .{});
+                try stderr.print("Excluded bundle IDs:", .{});
                 for (argsParser.args.excludeBundle) |bundle| {
-                    try stdout.print(" {s}", .{bundle});
+                    try stderr.print(" {s}", .{bundle});
                 }
-                try stdout.print("\n", .{});
+                try stderr.print("\n", .{});
             }
         }
     }
