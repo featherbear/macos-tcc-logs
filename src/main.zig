@@ -10,6 +10,8 @@ pub const LogStream = struct { eventMessage: []const u8, subsystem: []const u8, 
 const commandLineArguments = clap.parseParamsComptime(
     \\-h, --help             Display this help and exit.
     \\
+    \\--json                 Use JSON output
+    \\
     \\-s, --includeService <str>...  Include only specific services. Cannot be used with excludeService
     \\-S, --excludeService <str>...  Exclude specific services. Cannot be used with includeService
     \\
@@ -39,6 +41,10 @@ pub fn main() !void {
     {
         if (argsParser.args.help != 0) {
             return clap.help(stderr, clap.Help, &commandLineArguments, .{});
+        }
+
+        if (argsParser.args.json != 0) {
+            Event.shouldEmitAsJson = true;
         }
 
         if (argsParser.args.includeService.len > 0 and argsParser.args.excludeService.len > 0) {
@@ -130,7 +136,7 @@ pub fn main() !void {
         if (Event.processMessage(parsed.value)) |evtObject| {
             if (!shouldEmit(evtObject, argsParser)) continue;
 
-            try Event.emitEvent(evtObject);
+            try Event.emit(evtObject);
         }
     }
 }

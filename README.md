@@ -2,6 +2,8 @@
 
 Tracks requests to the Transparency Consent and Control daemon
 
+Supply --json for JSONL output
+
 ---
 
 Logs look something like this

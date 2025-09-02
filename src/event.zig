@@ -6,8 +6,24 @@ const LogStream = @import("./main.zig").LogStream;
 
 pub const AppEvent = struct { timeString: []const u8, service: []const u8, bundleId: []const u8, path: ?[]const u8, outcome: []const u8 };
 
-pub fn emitEvent(event: AppEvent) !void {
+fn emitCsv(event: AppEvent) !void {
     try stdout.print("{s},{s},\"{s}\",{s},{s}\n", .{ event.timeString, event.service, if (event.path) |path| path else "", event.bundleId, event.outcome });
+}
+
+fn emitJson(event: AppEvent) !void {
+    var jsonWriter = std.json.writeStream(stdout, .{});
+
+    try jsonWriter.write(.{ .time = event.timeString, .service = event.service, .bundleId = event.bundleId, .path = event.path, .outcome = event.outcome });
+    try stdout.writeByte('\n');
+}
+
+pub var shouldEmitAsJson = false;
+pub fn emit(event: AppEvent) !void {
+    if (shouldEmitAsJson) {
+        try emitJson(event);
+    } else {
+        try emitCsv(event);
+    }
 }
 
 pub fn processMessage(event: LogStream) ?AppEvent {
